@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پرامپت‌ساز پژوهشگر | ابزار آفلاین تولید پرامپت پژوهشی</title>
+  <style>
+
+    @font-face{
+      font-family:'B Titr Local';
+      src:local('B Titr'), local('BTitr'), local('B Titr Bold');
+      font-display:swap;
+    }
+    @font-face{
+      font-family:'IRANSans Local';
+      src:local('IRANSansX'), local('IRANSans'), local('Iran Sans'), local('IranSans');
+      font-display:swap;
+    }
+    :root{
+      --font-title:'B Titr Local','B Titr','BTitr','B Titr Bold',Tahoma,Arial,sans-serif;
+      --font-body:'IRANSans Local','IRANSansX','IRANSans','Iran Sans','IranSans',Tahoma,Arial,sans-serif;
+    }
+
+    :root{
+      --bg:#f4f7fb;
+      --bg2:#ffffff;
+      --card:rgba(255,255,255,.84);
+      --card-solid:#ffffff;
+      --text:#172033;
+      --muted:#677089;
+      --line:#dce4f2;
+      --soft:#eef4ff;
+      --accent:#2563eb;
+      --accent2:#7c3aed;
+      --accent3:#10b981;
+      --danger:#ef4444;
+      --warning:#f59e0b;
+      --shadow:0 22px 60px rgba(26,40,80,.12);
+      --shadow2:0 10px 30px rgba(37,99,235,.17);
+      --radius:24px;
+      --radius2:18px;
+      --mono:#0f172a;
+      --focus:0 0 0 4px rgba(37,99,235,.15);
+    }
+    body.dark{
+      --bg:#090f1e;
+      --bg2:#10182b;
+      --card:rgba(18,27,47,.78);
+      --card-solid:#121b2f;
+      --text:#eef4ff;
+      --muted:#aeb9d4;
+      --line:#24324e;
+      --soft:#17223a;
+      --accent:#60a5fa;
+      --accent2:#a78bfa;
+      --accent3:#34d399;
+      --danger:#fb7185;
+      --warning:#fbbf24;
+      --shadow:0 22px 60px rgba(0,0,0,.35);
+      --shadow2:0 10px 30px rgba(96,165,250,.17);
+      --mono:#e7efff;
+      --focus:0 0 0 4px rgba(96,165,250,.18);
+    }
+    body[data-accent="green"]{--accent:#059669;--accent2:#0d9488;--accent3:#22c55e;--focus:0 0 0 4px rgba(5,150,105,.15)}
+    body.dark[data-accent="green"]{--accent:#34d399;--accent2:#2dd4bf;--accent3:#86efac;--focus:0 0 0 4px rgba(52,211,153,.16)}
+    body[data-accent="rose"]{--accent:#e11d48;--accent2:#db2777;--accent3:#f97316;--focus:0 0 0 4px rgba(225,29,72,.14)}
+    body.dark[data-accent="rose"]{--accent:#fb7185;--accent2:#f472b6;--accent3:#fb923c;--focus:0 0 0 4px rgba(251,113,133,.18)}
+    body[data-accent="gold"]{--accent:#b45309;--accent2:#d97706;--accent3:#f59e0b;--focus:0 0 0 4px rgba(180,83,9,.14)}
+    body.dark[data-accent="gold"]{--accent:#fbbf24;--accent2:#f59e0b;--accent3:#fde68a;--focus:0 0 0 4px rgba(251,191,36,.16)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--font-body);
+      background:
+        radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 28%),
+        radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--accent2) 17%, transparent), transparent 30%),
+        radial-gradient(circle at 50% 110%, color-mix(in srgb, var(--accent3) 13%, transparent), transparent 28%),
+        linear-gradient(145deg,var(--bg),var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.85;
+      transition:background .25s ease,color .25s ease;
+    }
+    body.compact{line-height:1.65}
+    button,input,select,textarea{font-family:var(--font-body)}
+    a{color:inherit}
+    .app{width:min(1420px,94vw);margin:0 auto;padding:24px 0 54px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:linear-gradient(135deg,color-mix(in srgb, var(--card-solid) 90%, transparent),color-mix(in srgb, var(--soft) 72%, transparent));
+      box-shadow:var(--shadow);
+      border-radius:calc(var(--radius) + 10px);
+      padding:28px;
+      backdrop-filter:blur(18px);
+    }
+    .hero:before{
+      content:"";
+      position:absolute;inset:-80px auto auto -80px;
+      width:230px;height:230px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      opacity:.16;filter:blur(6px)
+    }
+    .hero:after{
+      content:"";
+      position:absolute;inset:auto -70px -100px auto;
+      width:260px;height:260px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent3),var(--accent));
+      opacity:.12;filter:blur(8px)
+    }
+    .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:center}
+    .eyebrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;color:var(--muted);font-size:13px}
+    .badge{
+      border:1px solid var(--line);
+      background:color-mix(in srgb, var(--soft) 75%, transparent);
+      color:var(--text);
+      padding:6px 11px;
+      border-radius:999px;
+      display:inline-flex;align-items:center;gap:6px;
+      white-space:nowrap
+    }
+    h1{margin:0;font-size:clamp(28px,4.5vw,52px);letter-spacing:-1.6px;line-height:1.35;font-family:var(--font-title);font-weight:700}
+    h2,h3,summary,.mini-title,.section-number{font-family:var(--font-title);font-weight:700}
+    .gradient-text{background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{margin:14px 0 0;color:var(--muted);font-size:16px;max-width:850px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:15px;
+      background:var(--soft);
+      color:var(--text);
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      font-weight:700;
+      transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease;
+      border:1px solid var(--line);
+      min-height:46px;
+      text-decoration:none;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow2)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent}
+    .btn.success{background:linear-gradient(135deg,var(--accent3),var(--accent));color:white;border-color:transparent}
+    .btn.ghost{background:transparent}
+    .btn.danger{background:color-mix(in srgb, var(--danger) 10%, var(--card-solid));color:var(--danger);border-color:color-mix(in srgb, var(--danger) 24%, var(--line))}
+    .btn.small{min-height:auto;padding:8px 11px;border-radius:12px;font-size:12px}
+    .hero-panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:color-mix(in srgb, var(--card-solid) 72%, transparent);
+      padding:18px;
+      box-shadow:0 12px 35px rgba(0,0,0,.05)
+    }
+    .mini-title{font-weight:900;margin:0 0 8px;font-size:15px}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+    .stat{background:var(--soft);border:1px solid var(--line);border-radius:17px;padding:12px;min-height:88px}
+    .stat strong{display:block;font-size:22px;color:var(--accent);line-height:1.2}.stat span{color:var(--muted);font-size:12px}
+    .topbar{position:sticky;top:10px;z-index:50;margin:16px 0;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb, var(--card-solid) 82%, transparent);backdrop-filter:blur(16px);padding:10px;box-shadow:0 10px 32px rgba(0,0,0,.08)}
+    .topbar-left,.topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .pill-nav{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+    .pill-nav a{font-size:12px;text-decoration:none;padding:8px 10px;border-radius:999px;color:var(--muted);border:1px solid transparent}.pill-nav a:hover{border-color:var(--line);color:var(--text);background:var(--soft)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:18px;align-items:start}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;backdrop-filter:blur(16px);margin-bottom:18px}
+    .panel-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}.panel h2{margin:0;font-size:21px;letter-spacing:-.5px}.panel p.sub{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .section-number{width:36px;height:36px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:900;box-shadow:var(--shadow2);flex:0 0 auto}
+    .header-title{display:flex;gap:10px;align-items:center}.header-title>div:last-child{min-width:0}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.full{grid-column:1/-1}
+    label.field{display:block}.label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.label-text{font-weight:800;font-size:13px}.hint{font-size:11px;color:var(--muted)}
+    input,select,textarea{width:100%;background:color-mix(in srgb, var(--card-solid) 84%, transparent);color:var(--text);border:1px solid var(--line);border-radius:15px;padding:12px 13px;outline:none;font-size:13px;transition:box-shadow .15s ease,border-color .15s ease,background .15s ease}textarea{resize:vertical;min-height:92px;line-height:1.75}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--focus)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}.chip{position:relative}.chip input{position:absolute;opacity:0;pointer-events:none}.chip span{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:9px 12px;background:color-mix(in srgb, var(--card-solid) 76%, transparent);cursor:pointer;font-size:12px;color:var(--muted);font-weight:700;transition:.15s ease}.chip input:checked+span{background:linear-gradient(135deg,color-mix(in srgb, var(--accent) 18%, var(--card-solid)),color-mix(in srgb, var(--accent2) 16%, var(--card-solid)));border-color:color-mix(in srgb, var(--accent) 55%, var(--line));color:var(--text);box-shadow:0 8px 24px color-mix(in srgb, var(--accent) 12%, transparent)}
+    .tools-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}.searchbox{position:relative;min-width:min(340px,100%);flex:1}.searchbox input{padding-right:42px}.searchbox:before{content:"⌕";position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:22px;z-index:1}
+    .group-tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:var(--soft);color:var(--muted);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800;cursor:pointer}.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent;box-shadow:var(--shadow2)}
+    .cards-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.section-card{position:relative;border:1px solid var(--line);background:color-mix(in srgb, var(--card-solid) 72%, transparent);border-radius:18px;padding:14px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;min-height:128px;overflow:hidden}.section-card:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}.section-card.selected{border-color:color-mix(in srgb, var(--accent) 62%, var(--line));background:linear-gradient(135deg,color-mix(in srgb, var(--accent) 10%, var(--card-solid)),color-mix(in srgb, var(--accent2) 7%, var(--card-solid)))}.section-card .check{position:absolute;top:12px;left:12px;width:24px;height:24px;border-radius:9px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:white;background:transparent;font-size:14px}.section-card.selected .check{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}.section-card h3{margin:0 0 7px;padding-left:28px;font-size:14px;line-height:1.55}.section-card p{margin:0;color:var(--muted);font-size:12px}.section-card .tag{display:inline-flex;margin-top:10px;font-size:11px;color:var(--accent);background:color-mix(in srgb, var(--accent) 10%, transparent);border:1px solid color-mix(in srgb, var(--accent) 20%, transparent);padding:3px 8px;border-radius:999px}
+    .selected-list{display:flex;gap:7px;flex-wrap:wrap;min-height:36px}.selected-item{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:color-mix(in srgb, var(--accent) 11%, var(--card-solid));border:1px solid color-mix(in srgb, var(--accent) 25%, var(--line));font-size:11px;color:var(--text)}.selected-item button{border:0;background:transparent;color:var(--danger);font-weight:900;cursor:pointer;font-size:14px;padding:0 2px}
+    .sidebar{position:sticky;top:94px}.output-panel{margin-bottom:0}.output-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.output-actions .fullbtn{grid-column:1/-1}.prompt-box{position:relative}.prompt-output{width:100%;min-height:600px;max-height:72vh;font-family:var(--font-body);line-height:1.9;white-space:pre-wrap;background:color-mix(in srgb, var(--card-solid) 88%, transparent);color:var(--mono);border:1px solid var(--line);border-radius:20px;padding:16px;direction:rtl}.counter{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:11px}.counter span{border:1px solid var(--line);border-radius:999px;padding:4px 8px;background:var(--soft)}
+    .notice{border:1px solid color-mix(in srgb, var(--warning) 34%, var(--line));background:color-mix(in srgb, var(--warning) 9%, var(--card-solid));border-radius:18px;padding:12px 14px;color:var(--text);font-size:12px}.notice strong{color:var(--warning)}
+    details{border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb, var(--card-solid) 70%, transparent);padding:10px 12px}details+details{margin-top:10px}summary{cursor:pointer;font-weight:900;color:var(--text)}details p,details li{color:var(--muted);font-size:12px}
+    .footer{margin-top:18px;text-align:center;color:var(--muted);font-size:12px}.kbd{font-family:var(--font-body);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:2px 6px;color:var(--text)}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(25px);opacity:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:11px 17px;box-shadow:var(--shadow);z-index:1000;font-size:13px;font-weight:800;transition:.25s ease;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}.modal-backdrop.show{display:flex}.modal{width:min(840px,100%);max-height:90vh;overflow:auto;background:var(--card-solid);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:24px;padding:22px}.modal h2{margin:0 0 10px}.modal p,.modal li{color:var(--muted);font-size:13px}.modal .close{float:left}
+    @media (max-width:1120px){.hero-inner,.layout{grid-template-columns:1fr}.sidebar{position:static}.prompt-output{min-height:420px}.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:720px){.app{width:min(96vw,100%);padding-top:12px}.hero{padding:20px;border-radius:24px}.topbar{position:static}.form-grid,.form-grid.three,.cards-grid,.mini-grid{grid-template-columns:1fr}.panel{padding:16px}.output-actions{grid-template-columns:1fr}.hero-actions .btn{width:100%}h1{letter-spacing:-.8px}}
+  </style>
+</head>
+<body data-accent="blue">
+  <div class="app">
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">
+            <span class="badge">🧩 فرمول ۵ مرحله‌ای</span>
+            <span class="badge">🔒 آفلاین؛ بدون ارسال داده</span>
+            <span class="badge">🎓 مناسب پژوهش دانشگاهی و کاربردی</span>
+          </div>
+          <h1><span class="gradient-text">پرامپت‌ساز پژوهشگر</span><br>تولید پرامپت آماده، حرفه‌ای و قابل ویرایش</h1>
+          <p class="lead">برای دانشجویان، استادان، پژوهشگران مستقل، تیم‌های تحقیق بازار، سیاست‌پژوهی، UX Research، مقاله‌نویسی، پایان‌نامه، گزارش‌های علمی و هر حوزه‌ای که نیاز به پژوهش دقیق دارد.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#builder">شروع ساخت پرامپت</a>
+            <button class="btn" id="loadExampleBtn" type="button">پر کردن نمونه حرفه‌ای</button>
+            <button class="btn ghost" id="helpBtn" type="button">راهنمای استفاده</button>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <p class="mini-title">خروجی ابزار چه می‌سازد؟</p>
+          <div class="notice"><strong>نتیجه:</strong> یک پرامپت آماده با بخش‌های Task، Context، References، Evaluate و Iterate که داخل آن جای‌خالی‌های کاربردی مثل [موضوع پژوهش]، [روش تحقیق] و [کلیدواژه‌ها] قرار دارد.</div>
+          <div class="mini-grid">
+            <div class="stat"><strong id="statSections">0</strong><span>بخش پژوهشی انتخاب‌شده</span></div>
+            <div class="stat"><strong>۵</strong><span>مرحله پرامپت حرفه‌ای</span></div>
+            <div class="stat"><strong>۳۲+</strong><span>سناریوی پژوهشی آماده</span></div>
+            <div class="stat"><strong>۱۰۰٪</strong><span>قابل اجرا بدون اینترنت</span></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="topbar" aria-label="ناوبری ابزار">
+      <div class="topbar-right">
+        <div class="pill-nav">
+          <a href="#base">اطلاعات پایه</a>
+          <a href="#builder">انتخاب بخش‌ها</a>
+          <a href="#context">زمینه و جزئیات</a>
+          <a href="#references">رفرنس‌ها</a>
+          <a href="#evaluate">ارزیابی</a>
+          <a href="#output">خروجی</a>
+        </div>
+      </div>
+      <div class="topbar-left">
+        <select id="accentSelect" title="رنگ ابزار" style="width:auto;min-width:116px">
+          <option value="blue">آبی حرفه‌ای</option>
+          <option value="green">سبز پژوهشی</option>
+          <option value="rose">رز/ارغوانی</option>
+          <option value="gold">طلایی کلاسیک</option>
+        </select>
+        <button class="btn small" id="compactBtn" type="button">حالت فشرده</button>
+        <button class="btn small" id="themeBtn" type="button">🌙 حالت شب</button>
+      </div>
+    </nav>
+
+    <main class="layout">
+      <section>
+        <div class="panel" id="base">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۱</span>
+              <div><h2>Task | وظیفه، نقش و خروجی</h2><p class="sub">دقیق مشخص کن هوش مصنوعی چه نقشی داشته باشد و خروجی را با چه فرمتی تحویل دهد.</p></div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field">
+              <div class="label-row"><span class="label-text">پرسونا / نقش هوش مصنوعی</span><span class="hint">مثلاً روش‌شناس پژوهش</span></div>
+              <select id="persona">
+                <option value="یک استاد راهنمای پژوهش، روش‌شناس علمی و ویراستار آکادمیک با تجربه در مقاله‌نویسی، پایان‌نامه‌نویسی و طراحی پژوهش‌های کاربردی">استاد راهنما + روش‌شناس + ویراستار</option>
+                <option value="یک ویراستار ارشد ژورنال‌های علمی و متخصص نگارش آکادمیک با نگاه سخت‌گیرانه داوری">ویراستار ارشد ژورنال</option>
+                <option value="یک متخصص مرور ادبیات، مرور نظام‌مند و طراحی استراتژی جست‌وجوی منابع علمی">متخصص مرور ادبیات</option>
+                <option value="یک روش‌شناس پژوهش کمی، کیفی و آمیخته با تسلط بر طراحی نمونه‌گیری و تحلیل داده">روش‌شناس پژوهش</option>
+                <option value="یک تحلیل‌گر داده پژوهشی با توانایی توضیح آماری، کدنویسی تحلیلی و تفسیر نتایج">تحلیل‌گر داده پژوهشی</option>
+                <option value="یک پژوهشگر تجربه کاربر، تحقیق بازار و رفتار مصرف‌کننده با نگاه کاربردی و تجاری">پژوهشگر UX و بازار</option>
+                <option value="یک سیاست‌پژوه و تحلیل‌گر شواهد برای تصمیم‌سازی عمومی و سازمانی">سیاست‌پژوه و تحلیل‌گر شواهد</option>
+                <option value="custom">نقش دلخواه...</option>
+              </select>
+            </label>
+            <label class="field" id="customPersonaWrap" style="display:none">
+              <div class="label-row"><span class="label-text">نقش دلخواه</span><span class="hint">در یک جمله دقیق بنویس</span></div>
+              <input id="customPersona" placeholder="مثلاً [متخصص تحلیل محتوای کیفی در حوزه رسانه]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">هدف اصلی پرامپت</span><span class="hint">برای ساخت خروجی دقیق‌تر</span></div>
+              <select id="mainGoal">
+                <option>تولید پیش‌نویس حرفه‌ای و قابل ویرایش</option>
+                <option>بازنویسی و ارتقای متن پژوهشی موجود</option>
+                <option>طراحی ساختار، چارچوب و مسیر پژوهش</option>
+                <option>تحلیل، نقد و بهبود یک بخش پژوهش</option>
+                <option>ساخت چک‌لیست اجرایی و مرحله‌به‌مرحله</option>
+                <option>تبدیل متن خام به متن علمی/گزارشی</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">فرمت خروجی موردنظر</span><span class="hint">قابل تغییر در پرامپت</span></div>
+              <select id="outputFormat">
+                <option>ساختار مرحله‌ای با تیترهای روشن، بولت‌های دقیق و جدول‌های لازم</option>
+                <option>متن آکادمیک پیوسته با تیترگذاری استاندارد</option>
+                <option>جدول تحلیلی + توضیح کوتاه برای هر ردیف</option>
+                <option>چک‌لیست اجرایی قابل استفاده</option>
+                <option>قالب IMRaD برای مقاله علمی</option>
+                <option>قالب فصل‌بندی پایان‌نامه/رساله</option>
+                <option>گزارش حرفه‌ای برای تصمیم‌گیری مدیریتی</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">زبان خروجی</span><span class="hint">قابل استفاده برای مقاله فارسی/انگلیسی</span></div>
+              <select id="language">
+                <option>فارسی رسمی، دقیق و روان</option>
+                <option>انگلیسی آکادمیک</option>
+                <option>فارسی با معادل‌های تخصصی انگلیسی داخل پرانتز</option>
+                <option>دو زبانه: فارسی + نسخه انگلیسی پیشنهادی</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">سطح تخصصی خروجی</span><span class="hint">از ساده تا ژورنالی</span></div>
+              <select id="depth">
+                <option>حرفه‌ای و قابل استفاده برای پژوهش جدی</option>
+                <option>ساده و آموزشی برای شروع کار</option>
+                <option>پیشرفته، سخت‌گیرانه و مناسب داوری علمی</option>
+                <option>کاربردی، اجرایی و مناسب گزارش سازمانی</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin-top:14px">
+            <div class="label-row"><span class="label-text">نوع پژوهش</span><span class="hint">چند مورد قابل انتخاب است</span></div>
+            <div class="chips" id="researchTypeChips">
+              <label class="chip"><input type="checkbox" value="دانشگاهی/پایان‌نامه‌ای" checked><span>🎓 دانشگاهی</span></label>
+              <label class="chip"><input type="checkbox" value="مقاله علمی/ژورنالی"><span>📄 مقاله علمی</span></label>
+              <label class="chip"><input type="checkbox" value="پژوهش کاربردی/سازمانی"><span>🏢 کاربردی/سازمانی</span></label>
+              <label class="chip"><input type="checkbox" value="تحقیق بازار و کسب‌وکار"><span>📈 بازار</span></label>
+              <label class="chip"><input type="checkbox" value="پژوهش کاربر و تجربه کاربر"><span>🧪 UX Research</span></label>
+              <label class="chip"><input type="checkbox" value="سیاست‌پژوهی و تصمیم‌سازی"><span>🏛 سیاست‌پژوهی</span></label>
+              <label class="chip"><input type="checkbox" value="گزارش فنی/صنعتی"><span>⚙️ فنی/صنعتی</span></label>
+              <label class="chip"><input type="checkbox" value="پژوهش مستقل/غیردانشگاهی"><span>🔎 مستقل</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="builder">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۲</span>
+              <div><h2>انتخاب بخش‌های پژوهش</h2><p class="sub">هر بخشی را که می‌خواهی در پرامپت نهایی بیاید انتخاب کن. می‌توانی چندین بخش را با هم ترکیب کنی.</p></div>
+            </div>
+          </div>
+          <div class="tools-row">
+            <div class="searchbox"><input id="sectionSearch" placeholder="جست‌وجو: چکیده، مقدمه، روش‌شناسی، UX، داوری..." autocomplete="off"></div>
+            <div class="group-tabs" id="groupTabs"></div>
+          </div>
+          <div class="tools-row">
+            <div class="selected-list" id="selectedList"><span class="hint">هنوز بخشی انتخاب نشده است.</span></div>
+            <div class="chips">
+              <button class="btn small" type="button" id="selectGroupBtn">انتخاب گروه فعلی</button>
+              <button class="btn small danger" type="button" id="clearSectionsBtn">پاک کردن انتخاب‌ها</button>
+            </div>
+          </div>
+          <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+
+        <div class="panel" id="context">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۳</span>
+              <div><h2>Context | شرایط، جزئیات و محدودیت‌ها</h2><p class="sub">هر چقدر زمینه دقیق‌تر باشد، پرامپت نهایی استادانه‌تر و قابل استفاده‌تر می‌شود.</p></div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field full">
+              <div class="label-row"><span class="label-text">موضوع / عنوان فعلی پژوهش</span><span class="hint">اگر قطعی نیست، تقریبی بنویس</span></div>
+              <input id="topic" placeholder="مثلاً [تأثیر تجربه خرید آنلاین بر وفاداری مشتریان در فروشگاه‌های بومی]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">حوزه / رشته / صنعت</span><span class="hint">آکادمیک یا غیرآکادمیک</span></div>
+              <input id="field" placeholder="مثلاً [مدیریت بازاریابی]، [علوم تربیتی]، [سلامت دیجیتال]، [تحقیق بازار]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">مخاطب یا محل استفاده</span><span class="hint">داور، استاد، مدیر، کارفرما...</span></div>
+              <input id="audience" placeholder="مثلاً [استاد راهنما]، [داور مجله]، [مدیر محصول]، [کمیته اخلاق]">
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">مسئله، دغدغه یا شکاف پژوهشی</span><span class="hint">مشکل اصلی که پژوهش باید حل کند</span></div>
+              <textarea id="problem" placeholder="مثلاً [با وجود رشد فروش آنلاین، مشخص نیست کدام ابعاد تجربه خرید بیشترین اثر را بر اعتماد و خرید مجدد دارند.]"></textarea>
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">اهداف، سؤال‌ها یا فرضیه‌های اولیه</span><span class="hint">هر کدام را داری بنویس</span></div>
+              <textarea id="questions" placeholder="مثلاً [هدف: شناسایی عوامل مؤثر بر وفاداری مشتریان. سؤال: تجربه کاربری چه اثری بر اعتماد دارد؟ فرضیه: اعتماد رابطه تجربه خرید و وفاداری را میانجی‌گری می‌کند.]"></textarea>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">روش تحقیق / رویکرد</span><span class="hint">اگر نمی‌دانی، خالی بگذار</span></div>
+              <input id="method" placeholder="مثلاً [کمی پیمایشی]، [کیفی مصاحبه نیمه‌ساختاریافته]، [مرور نظام‌مند]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">جامعه، نمونه یا داده‌ها</span><span class="hint">انسان، اسناد، داده فروش، مصاحبه...</span></div>
+              <input id="sample" placeholder="مثلاً [مشتریان فروشگاه‌های آنلاین ایرانی]، [۲۰ مصاحبه]، [داده‌های فروش ۱۴۰۲]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">چارچوب نظری / مدل / کلیدواژه‌ها</span><span class="hint">با ویرگول جدا کن</span></div>
+              <input id="keywords" placeholder="مثلاً [اعتماد، وفاداری، تجربه خرید، UTAUT، TAM]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">محدودیت‌ها</span><span class="hint">زمان، بودجه، داده، دسترسی...</span></div>
+              <input id="constraints" placeholder="مثلاً [دسترسی محدود به داده خام]، [مهلت دو هفته‌ای]، [عدم استفاده از منابع غیرعلمی]">
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">سبک استناد / استاندارد</span><span class="hint">در صورت نیاز</span></div>
+              <select id="citationStyle">
+                <option>بدون سبک اجباری؛ فقط در صورت نیاز پیشنهاد بده</option>
+                <option>APA 7</option>
+                <option>MLA</option>
+                <option>Chicago</option>
+                <option>Vancouver</option>
+                <option>IEEE</option>
+                <option>Harvard</option>
+                <option>سبک دانشگاه/مجله: [نام سبک یا لینک راهنما]</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">طول تقریبی خروجی</span><span class="hint">عدد یا توصیف</span></div>
+              <input id="length" placeholder="مثلاً [۸۰۰ کلمه]، [۲ صفحه]، [کوتاه و دقیق]">
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">یادداشت‌های خاص</span><span class="hint">هر دستور ویژه‌ای که باید رعایت شود</span></div>
+              <textarea id="notes" placeholder="مثلاً [از ادبیات کلیشه‌ای پرهیز کن]، [متن باید برای مخاطب غیرمتخصص هم قابل فهم باشد]، [ابتدا نقد کن سپس نسخه پیشنهادی بده]."></textarea>
+            </label>
+          </div>
+        </div>
+
+        <div class="panel" id="references">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۴</span>
+              <div><h2>References | نمونه‌ها، منابع و سبک دلخواه</h2><p class="sub">برای خروجی دقیق‌تر، ۲ تا ۵ نمونه، متن خام، ساختار مقاله یا الگوی دلخواه وارد کن. خالی هم می‌تواند بماند.</p></div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field">
+              <div class="label-row"><span class="label-text">نوع نمونه‌دهی</span><span class="hint">Zero/One/Few shot</span></div>
+              <select id="shotMode">
+                <option value="Zero-shot: اگر نمونه‌ای داده نشده، خروجی را از صفر و بر اساس بهترین اصول بساز.">Zero-shot: بدون نمونه</option>
+                <option value="One-shot: از یک نمونه داده‌شده برای تقلید سبک و ساختار استفاده کن، نه کپی‌برداری.">One-shot: یک نمونه</option>
+                <option value="Few-shot: از ۲ تا ۵ نمونه برای فهم سبک، سطح جزئیات و ساختار مطلوب استفاده کن، اما محتوای جدید و اصیل تولید کن.">Few-shot: چند نمونه</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">سیاست استفاده از منابع</span><span class="hint">برای جلوگیری از خطا</span></div>
+              <select id="sourcePolicy">
+                <option>هیچ منبع، آمار یا نقل‌قولی جعل نکن؛ اگر منبع قطعی نداری، با برچسب [نیازمند منبع] مشخص کن.</option>
+                <option>فقط از منابعی استفاده کن که من در متن یا نمونه‌ها داده‌ام.</option>
+                <option>منابع احتمالی را فقط به‌عنوان پیشنهاد جست‌وجو معرفی کن، نه منبع قطعی.</option>
+                <option>برای هر ادعای مهم، نوع منبع مناسب را پیشنهاد بده.</option>
+              </select>
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">نمونه ۱ / متن خام / ساختار دلخواه</span><span class="hint">اختیاری</span></div>
+              <textarea id="ref1" placeholder="[نمونه چکیده، بخشی از مقاله، توضیح استاد، ساختار مجله، یا متن خام خود را اینجا بگذارید.]"></textarea>
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">نمونه ۲ تا ۵</span><span class="hint">اختیاری</span></div>
+              <textarea id="ref2" placeholder="[نمونه‌های بیشتر یا نکات سبک نوشتاری مطلوب را اینجا وارد کنید.]"></textarea>
+            </label>
+          </div>
+        </div>
+
+
+        <div class="panel" id="prompt-techniques">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۵</span>
+              <div><h2>سبک پرامپت و تکنیک‌های پیشرفته</h2><p class="sub">کاربر می‌تواند بین پرامپت اصولی پنج‌مرحله‌ای و پرامپت پیشرفته انتخاب کند؛ تکنیک‌ها فقط وقتی لازم‌اند فعال شوند.</p></div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <div class="label-row"><span class="label-text">سبک تولید پرامپت</span><span class="hint">اصولی یا پیشرفته</span></div>
+              <select id="promptMode">
+                <option value="hybrid">ترکیبی: فرمول اصولی + تکنیک‌های انتخابی</option>
+                <option value="basic">اصولی: فقط فرمول ۵ مرحله‌ای Task/Context/References/Evaluate/Iterate</option>
+                <option value="advanced">پیشرفته: مناسب کارهای پیچیده، حساس، چندمرحله‌ای و قابل ارزیابی</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">رویکرد کنترل خروجی</span><span class="hint">برای کاهش پاسخ‌های کلی</span></div>
+              <select id="controlMode">
+                <option>دقیق، ساختاریافته، بدون کلی‌گویی و همراه با جای‌خالی‌های [ ]</option>
+                <option>اول ابهام‌ها را شناسایی کن، سپس خروجی قابل استفاده بده</option>
+                <option>چند گزینه بساز، مقایسه کن و بهترین گزینه را پیشنهاد بده</option>
+                <option>ابتدا پیش‌نویس بده، سپس نقد و نسخه اصلاح‌شده ارائه کن</option>
+              </select>
+            </label>
+            <label class="field full">
+              <div class="label-row"><span class="label-text">یادداشت اختصاصی برای سبک پرامپت</span><span class="hint">اختیاری</span></div>
+              <textarea id="advancedNote" placeholder="[مثلاً: خروجی برای داور سخت‌گیر ژورنال باشد / ابتدا ۳ سؤال بپرس / فقط جدول بده / لحن کاملاً آکادمیک باشد.]"></textarea>
+            </label>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="label-row"><span class="label-text">تکنیک‌های قابل انتخاب</span><span class="hint">برای پرامپت پیشرفته یا ترکیبی</span></div>
+            <div class="chips" id="advancedTechniqueChips">
+              <label class="chip"><input type="checkbox" data-default="1" value="Structured Output: خروجی را با قالب دقیق بخواه؛ مثل جدول، چک‌لیست، مراحل شماره‌دار، IMRaD یا JSON. اگر قالب مشخص شد، از توضیح اضافه پرهیز کن." checked><span>🎯 خروجی ساختاریافته</span></label>
+              <label class="chip"><input type="checkbox" data-default="1" value="Persona + Standard: نقش تخصصی و استاندارد کار را دقیق کن؛ مثل استاد راهنما، داور ژورنال، روش‌شناس، ویراستار علمی یا تحلیل‌گر صنعت." checked><span>👤 نقش + استاندارد</span></label>
+              <label class="chip"><input type="checkbox" data-default="1" value="Constraints: بایدها و نبایدها را روشن کن؛ حدس نزن، منبع جعل نکن، اگر داده کافی نیست بگو نامشخص، لحن رسمی و دقیق باشد." checked><span>🧱 محدودیت‌ها</span></label>
+              <label class="chip"><input type="checkbox" data-default="1" value="Clarifying Questions: اگر درخواست مبهم است، قبل از پاسخ نهایی حداکثر ۳ سؤال ضروری بپرس؛ اگر داده کافی است مستقیم خروجی بده." checked><span>❓ اول سؤال بپرس</span></label>
+              <label class="chip"><input type="checkbox" data-default="1" value="Rubric / Scoring: خروجی را با معیارهای وضوح، دقت، کامل بودن، کاربردی بودن و ریسک خطا از ۱ تا ۵ ارزیابی کن و نسخه بهبود یافته بده." checked><span>✅ روبریک ارزیابی</span></label>
+              <label class="chip"><input type="checkbox" data-default="1" value="Draft → Refine: ابتدا پیش‌نویس سریع بده؛ سپس ۵ ایراد اصلی را شناسایی کن و نسخه نهایی اصلاح‌شده ارائه بده." checked><span>🔁 پیش‌نویس تا نسخه نهایی</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Decomposition: کار پیچیده را به ۵ گام بشکن؛ برای هر گام ورودی لازم، خروجی، ریسک‌ها و معیار موفقیت را مشخص کن."><span>🧩 شکستن مسئله</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Delimiters: متن، داده یا نمونه را داخل مرزهای مشخص مثل سه بک‌تیک تحلیل کن و چیزی خارج از متن اضافه نکن مگر با برچسب پیشنهاد."><span>🧷 مرزگذاری متن</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Few-shot: اگر ۲ تا ۵ نمونه داده شد، سبک، سطح جزئیات و ساختار آن‌ها را تقلید کن؛ اما متن جدید و اصیل بساز."><span>🧾 Few-shot</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="What NOT to do: موارد ممنوع را رعایت کن؛ کلی‌گویی، تعریف‌های عمومی، مثال‌های تکراری، ادعای بی‌پشتوانه و منبع‌سازی ممنوع."><span>🛑 منفی‌نویسی</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Prompt Chaining: کار را زنجیره‌ای انجام بده؛ خلاصه‌سازی → استخراج سؤال‌ها → پیشنهاد راه‌حل/روش → ارزیابی ریسک → قدم بعدی."><span>🔗 زنجیره پرامپت‌ها</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="منطق‌سنجی ایمن: به‌جای نمایش زنجیره فکر پنهان، برای هر گزینه فرض‌ها، دلیل‌های خلاصه، ریسک‌ها و محدودیت‌ها را روشن کن."><span>🧠 منطق‌سنجی ایمن</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Tree of Thought: سه مسیر متفاوت محافظه‌کارانه، متعادل و جسورانه پیشنهاد بده؛ مزایا، معایب و ریسک‌ها را بنویس؛ سپس امتیاز بده و بهترین مسیر را انتخاب کن."><span>🌳 چند مسیر و انتخاب بهترین</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="AgentX / Role-play: نقش داور سخت‌گیر، استاد راهنما، منتور پژوهشی یا مشتری دقیق را بگیر؛ خروجی را نقد کن، سؤال پیگیری بپرس و پیشنهاد اصلاح بده."><span>🧑‍⚖️ نقش داور/منتور</span></label>
+              <label class="chip"><input type="checkbox" data-default="0" value="Prompt Versioning: در پایان یک نسخه بهینه‌شده از همین پرامپت با نام نسخه، هدف استفاده و پیشنهاد ذخیره در کتابخانه پرامپت ارائه کن."><span>📚 نسخه‌بندی پرامپت</span></label>
+            </div>
+          </div>
+
+          <details style="margin-top:16px" open>
+            <summary>راهنمای کوتاه پژوهش با GenAI</summary>
+            <p>اگر پژوهشگر، دانشجو، دانش‌پذیر یا استاد هستی، هوش مصنوعی می‌تواند مثل دستیار پژوهشی کنار تو باشد؛ به شرطی که خروجی را پیش‌نویس ببینی، نه حقیقت قطعی. برای ادعاها، اعداد، نقل‌قول‌ها و منابع همیشه راستی‌آزمایی لازم است.</p>
+            <p>کاربردهای مهم: خلاصه‌سازی مقاله و فصل کتاب، استخراج نکات کلیدی و سؤال پژوهشی، ساخت چارچوب مقاله/پروپوزال/پایان‌نامه، مقایسه نظریه‌ها/روش‌ها/مقالات، و بازنویسی علمی با حفظ معنا.</p>
+          </details>
+        </div>
+
+
+        <div class="panel" id="evaluate">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">۶</span>
+              <div><h2>Evaluate & Iterate | ارزیابی و بهبود مرحله‌ای</h2><p class="sub">پرامپت نهایی از هوش مصنوعی می‌خواهد خروجی را کنترل کند و برای اصلاح مرحله بعد پیشنهاد بدهد.</p></div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field">
+              <div class="label-row"><span class="label-text">شیوه ارزیابی خروجی</span><span class="hint">سخت‌گیری را انتخاب کن</span></div>
+              <select id="evalMode">
+                <option>پس از تولید خروجی، یک چک‌لیست ارزیابی کوتاه و سخت‌گیرانه ارائه کن.</option>
+                <option>اول خروجی را تولید کن، سپس نقاط ضعف، ریسک‌ها و ابهام‌ها را جداگانه بنویس.</option>
+                <option>قبل از تولید نهایی، اگر داده کافی نیست حداکثر ۵ سؤال کلیدی بپرس.</option>
+                <option>دو نسخه تولید کن: نسخه محافظه‌کارانه و نسخه خلاقانه؛ سپس مقایسه کن.</option>
+              </select>
+            </label>
+            <label class="field">
+              <div class="label-row"><span class="label-text">مرحله تکرار و اصلاح</span><span class="hint">ABI</span></div>
+              <select id="iterateMode">
+                <option>در پایان، ۳ پیشنهاد مشخص برای بهتر کردن پرامپت/خروجی بعدی بده.</option>
+                <option>در پایان، نسخه اصلاح‌شده پرامپت را هم پیشنهاد بده.</option>
+                <option>در پایان، از من بخواه اطلاعات کمبود را داخل [ ] تکمیل کنم.</option>
+                <option>در پایان، مسیر مرحله بعد پژوهش را به ترتیب اولویت پیشنهاد بده.</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin-top:14px">
+            <div class="label-row"><span class="label-text">معیارهای کنترل کیفیت</span><span class="hint">چند مورد قابل انتخاب است</span></div>
+            <div class="chips" id="qualityChips">
+              <label class="chip"><input type="checkbox" value="دقت علمی، انسجام منطقی و پرهیز از ادعاهای بی‌پشتوانه" checked><span>✅ دقت علمی</span></label>
+              <label class="chip"><input type="checkbox" value="شفاف‌سازی فرضیات، عدم قطعیت‌ها و اطلاعاتی که نیاز به منبع دارند" checked><span>🔍 عدم قطعیت</span></label>
+              <label class="chip"><input type="checkbox" value="تناسب با مخاطب، حوزه پژوهش و سطح تخصصی انتخاب‌شده" checked><span>🎯 تناسب مخاطب</span></label>
+              <label class="chip"><input type="checkbox" value="ساختار استاندارد، تیترگذاری تمیز و قابل پیگیری" checked><span>🧱 ساختار</span></label>
+              <label class="chip"><input type="checkbox" value="نوآوری، اصالت و پرهیز از متن کلیشه‌ای"><span>💡 اصالت</span></label>
+              <label class="chip"><input type="checkbox" value="قابلیت اجرا، عملیاتی بودن پیشنهادها و امکان سنجش نتیجه"><span>🛠 اجرایی بودن</span></label>
+              <label class="chip"><input type="checkbox" value="رعایت اخلاق پژوهش، محرمانگی داده‌ها و حساسیت‌های انسانی"><span>🛡 اخلاق پژوهش</span></label>
+              <label class="chip"><input type="checkbox" value="پیشنهاد جای‌خالی‌های دقیق داخل [ ] برای تکمیل داده‌های کمبود"><span>🧩 جای‌خالی [ ]</span></label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar" id="output">
+        <div class="panel output-panel printable">
+          <div class="panel-header">
+            <div class="header-title">
+              <span class="section-number">✓</span>
+              <div><h2>پرامپت آماده</h2><p class="sub">همزمان با تغییر تنظیمات به‌روزرسانی می‌شود.</p></div>
+            </div>
+          </div>
+          <div class="output-actions">
+            <button class="btn primary fullbtn" id="copyBtn" type="button">کپی پرامپت</button>
+            <button class="btn" id="downloadBtn" type="button">دانلود TXT</button>
+            <button class="btn danger fullbtn" id="resetBtn" type="button">پاک‌سازی فرم</button>
+          </div>
+          <div class="prompt-box" style="margin-top:12px">
+            <textarea id="promptOutput" class="prompt-output" spellcheck="false"></textarea>
+          </div>
+          <div class="counter">
+            <span id="wordCount">۰ واژه</span>
+            <span id="charCount">۰ نویسه</span>
+            <span id="sectionCount">۰ بخش</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h2 style="font-size:17px;margin-top:0">نکته‌های کاربردی</h2>
+          <details open>
+            <summary>چطور بهترین نتیجه را بگیری؟</summary>
+            <p>هرجا در پرامپت نهایی [ ] دیدی، آن را با اطلاعات واقعی خودت جایگزین کن. اگر اطلاعات نداری، همان جای‌خالی را نگه دار تا هوش مصنوعی از تو سؤال بپرسد.</p>
+          </details>
+          <details>
+            <summary>برای منابع و رفرنس‌ها</summary>
+            <p>از هوش مصنوعی نخواه منبع قطعی بسازد. بهتر است بگویی: «اگر منبع نداری با [نیازمند منبع] مشخص کن.» این ابزار همین محافظ را داخل پرامپت قرار می‌دهد.</p>
+          </details>
+          <details>
+            <summary>برای مقاله و پایان‌نامه</summary>
+            <p>بخش‌های «بیان مسئله»، «پیشینه»، «روش‌شناسی»، «یافته‌ها» و «بحث» را جداگانه پرامپت بده تا خروجی دقیق‌تر شود.</p>
+          </details>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      ساخته شده توسط <strong>حسین شعبانی</strong> (محقق هوش مصنوعی)<br>
+      ارتباط با ما در تلگرام، بله و ایتا: <bdi>09196911794</bdi>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="helpModal">
+    <div class="modal">
+      <button class="btn small close" id="closeHelpBtn" type="button">بستن</button>
+      <h2>راهنمای سریع ابزار</h2>
+      <p>این ابزار یک پرامپت حرفه‌ای پژوهشی می‌سازد، نه متن نهایی مقاله. خروجی را در ChatGPT یا هر ابزار هوش مصنوعی دیگر کپی کن.</p>
+      <ol>
+        <li>در بخش Task نقش هوش مصنوعی و فرمت خروجی را انتخاب کن.</li>
+        <li>بخش‌های پژوهشی موردنیاز را انتخاب کن؛ مثلاً چکیده، مقدمه، پیشینه و روش‌شناسی.</li>
+        <li>در Context اطلاعات واقعی پژوهش را وارد کن؛ هر مورد خالی بماند با جای‌خالی [ ] در پرامپت می‌آید.</li>
+        <li>اگر نمونه، متن خام یا دستور استاد داری در References اضافه کن.</li>
+        <li>پرامپت آماده را کپی کن و در ابزار هوش مصنوعی استفاده کن. سپس طبق ABI خروجی را اصلاح کن.</li>
+      </ol>
+      <p>برای استفاده آفلاین کافی است همین فایل HTML را نگه داری و هر بار با دابل‌کلیک باز کنی.</p>
+    </div>
+  </div>
+  <div class="toast" id="toast">انجام شد</div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const faDigits = (value) => String(value).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    const getVal = (id, placeholder) => {
+      const el = $(id);
+      const value = (el?.value || '').trim();
+      return value || placeholder;
+    };
+    const getSelectedChecks = (containerId) => Array.from($(containerId).querySelectorAll('input[type="checkbox"]:checked')).map(i => i.value);
+
+    const groups = [
+      'همه', 'طراحی پژوهش', 'مقاله و پایان‌نامه', 'روش و داده', 'انتشار و داوری', 'پژوهش کاربردی'
+    ];
+
+    const sections = [
+      {id:'topic', group:'طراحی پژوهش', icon:'🎯', title:'انتخاب و دقیق‌سازی موضوع', desc:'ساخت موضوع دقیق، قابل پژوهش و محدودسازی دامنه.', tag:'شروع پژوهش', prompt:`برای انتخاب و دقیق‌سازی موضوع:
+- ابتدا موضوع خام را به ۵ عنوان پژوهشی دقیق‌تر تبدیل کن.
+- برای هر عنوان، دامنه، متغیرها/مفاهیم اصلی، جامعه/مورد مطالعه و امکان اجرا را توضیح بده.
+- عنوان‌ها را از کلی به دقیق مرتب کن.
+- در پایان بهترین گزینه را با دلیل انتخاب کن و جای‌خالی‌های لازم را با [ ] نشان بده.`},
+      {id:'problem', group:'طراحی پژوهش', icon:'❓', title:'بیان مسئله', desc:'تبدیل دغدغه خام به مسئله پژوهشی مستدل و منسجم.', tag:'پایه‌ای', prompt:`برای بیان مسئله:
+- مسئله را از زمینه عمومی شروع کن و به شکاف مشخص پژوهش برسان.
+- نشان بده چه چیزی هنوز معلوم نیست، چرا مهم است و پیامد حل نشدن آن چیست.
+- از ادعاهای بزرگ بدون پشتوانه پرهیز کن و جاهای نیازمند منبع را با [نیازمند منبع] علامت بزن.
+- خروجی را در چند پاراگراف منسجم + یک نسخه خلاصه بولتی ارائه کن.`},
+      {id:'questions', group:'طراحی پژوهش', icon:'🧭', title:'اهداف، سوالات و فرضیه‌ها', desc:'تولید هدف کلی، اهداف فرعی، سوالات و فرضیه‌های قابل آزمون.', tag:'طراحی', prompt:`برای اهداف، سؤال‌ها و فرضیه‌ها:
+- هدف کلی را دقیق و قابل سنجش بنویس.
+- ۳ تا ۶ هدف فرعی بساز.
+- برای هر هدف فرعی، سؤال پژوهش و در صورت مناسب بودن فرضیه متناظر پیشنهاد بده.
+- رابطه بین متغیرها/مفاهیم را روشن کن.
+- مواردی را که به داده یا تصمیم پژوهشگر نیاز دارد داخل [ ] بگذار.`},
+      {id:'proposal', group:'طراحی پژوهش', icon:'🧾', title:'پروپوزال / طرح پژوهش', desc:'ساخت چارچوب کامل پروپوزال برای دانشگاه یا سازمان.', tag:'طرح کامل', prompt:`برای پروپوزال/طرح پژوهش:
+- ساختار پیشنهادی شامل عنوان، مسئله، ضرورت، اهداف، سوالات/فرضیه‌ها، پیشینه کوتاه، روش، جامعه/نمونه، ابزار، شیوه تحلیل، زمان‌بندی و خروجی‌های مورد انتظار را بساز.
+- برای هر بخش، متن نمونه + چک‌لیست تکمیل ارائه کن.
+- ریسک‌های اجرایی، اخلاقی و روش‌شناختی را جداگانه ذکر کن.`},
+      {id:'variables', group:'طراحی پژوهش', icon:'🔗', title:'متغیرها، مفاهیم و مدل مفهومی', desc:'تعریف متغیرها، روابط، مدل نظری و مسیرهای اثرگذاری.', tag:'مدل', prompt:`برای متغیرها/مفاهیم و مدل مفهومی:
+- مفاهیم اصلی را تعریف عملیاتی کن.
+- متغیر مستقل، وابسته، میانجی، تعدیل‌گر یا مقوله‌های کیفی را پیشنهاد بده.
+- روابط احتمالی را در قالب گزاره‌های روشن بنویس.
+- یک مدل مفهومی متنی/جدولی بساز و بگو کدام بخش‌ها نیازمند منبع یا داده بیشتر هستند.`},
+      {id:'keywords', group:'طراحی پژوهش', icon:'🔎', title:'کلیدواژه‌ها و استراتژی جست‌وجو', desc:'ساخت کلیدواژه فارسی/انگلیسی و عبارات جست‌وجوی منابع.', tag:'جست‌وجو', prompt:`برای کلیدواژه‌ها و استراتژی جست‌وجو:
+- کلیدواژه‌های اصلی، مترادف‌ها، معادل‌های انگلیسی و ترکیب‌های جست‌وجو را پیشنهاد بده.
+- عبارات Boolean با AND / OR / NOT بساز.
+- پایگاه‌ها یا نوع منابع مناسب را پیشنهاد کن، اما منبع جعلی معرفی نکن.
+- خروجی را در جدول فارسی/انگلیسی ارائه کن.`},
+      {id:'abstract', group:'مقاله و پایان‌نامه', icon:'🧩', title:'چکیده', desc:'چکیده ساختاریافته/غیرساختاریافته با هدف، روش، یافته و نتیجه.', tag:'مقاله', prompt:`برای چکیده:
+- چکیده را با منطق زمینه، هدف، روش، یافته‌های اصلی، نتیجه و کاربرد بنویس.
+- اگر یافته واقعی ندارم، به‌جای جعل نتیجه از [یافته‌های اصلی] استفاده کن.
+- ۲ نسخه بده: نسخه کوتاه و نسخه کامل‌تر.
+- ۳ تا ۶ کلیدواژه پیشنهادی هم اضافه کن.`},
+      {id:'intro', group:'مقاله و پایان‌نامه', icon:'🚪', title:'مقدمه', desc:'مقدمه قوی با زمینه‌سازی، شکاف، هدف و نقشه مقاله.', tag:'نگارش', prompt:`برای مقدمه:
+- از زمینه کلی شروع کن، سپس مسئله و شکاف را دقیق کن.
+- ضرورت پژوهش را بدون اغراق توضیح بده.
+- در انتها هدف، سؤال/فرضیه و ساختار ادامه متن را بیاور.
+- جاهایی که نیاز به استناد دارند با [نیازمند منبع] مشخص شوند.`},
+      {id:'litreview', group:'مقاله و پایان‌نامه', icon:'📚', title:'پیشینه پژوهش / مرور ادبیات', desc:'ساختاردهی ادبیات، طبقه‌بندی مطالعات و استخراج شکاف.', tag:'Literature', prompt:`برای پیشینه پژوهش/مرور ادبیات:
+- مطالعات و دیدگاه‌ها را به محورهای مفهومی طبقه‌بندی کن، نه صرفاً فهرست‌وار.
+- برای هر محور، تعریف، یافته‌های رایج، تعارض‌ها، محدودیت‌ها و شکاف‌ها را بنویس.
+- اگر منبع واقعی نداری، عنوان منبع نساز و از [نیازمند منبع] استفاده کن.
+- در پایان، یک جدول «محور ادبیات / یافته کلیدی / شکاف / ارتباط با پژوهش من» ارائه کن.`},
+      {id:'theory', group:'مقاله و پایان‌نامه', icon:'🏛️', title:'چارچوب نظری / مفهومی', desc:'پیوند نظریه‌ها، مفاهیم و مدل تحلیلی پژوهش.', tag:'نظریه', prompt:`برای چارچوب نظری/مفهومی:
+- نظریه‌ها یا مدل‌های مناسب را با احتیاط و بدون جعل معرفی کن.
+- توضیح بده هر نظریه چگونه به مسئله و متغیرهای پژوهش وصل می‌شود.
+- یک چارچوب مفهومی پیشنهادی بساز و مفروضات آن را بنویس.
+- اگر نظریه مناسب قطعی نیست، گزینه‌ها را مقایسه کن و سؤال‌های لازم را بپرس.`},
+      {id:'methodology', group:'روش و داده', icon:'⚗️', title:'روش‌شناسی', desc:'طراحی روش تحقیق، نمونه‌گیری، ابزار، روایی/پایایی و تحلیل.', tag:'Method', prompt:`برای روش‌شناسی:
+- نوع پژوهش، رویکرد، طرح تحقیق، جامعه/نمونه، روش نمونه‌گیری، ابزار گردآوری داده و شیوه تحلیل را پیشنهاد/تنظیم کن.
+- توضیح بده چرا این روش برای سؤال پژوهش مناسب است.
+- تهدیدهای اعتبار، روایی/پایایی یا اعتمادپذیری را مشخص کن.
+- خروجی را به‌صورت متن آکادمیک + جدول تصمیم‌های روش‌شناختی بده.`},
+      {id:'instrument', group:'روش و داده', icon:'📝', title:'پرسشنامه، مصاحبه یا ابزار گردآوری داده', desc:'طراحی سوالات، شاخص‌ها و راهنمای گردآوری داده.', tag:'ابزار', prompt:`برای ابزار گردآوری داده:
+- بر اساس اهداف و مفاهیم، ابعاد و گویه‌ها/سؤال‌های مصاحبه/شاخص‌ها را طراحی کن.
+- برای هر سؤال، هدف، نوع پاسخ، نکته اخلاقی و ریسک سوگیری را بنویس.
+- سؤال‌های مبهم، جهت‌دار یا حساس را اصلاح کن.
+- اگر ابزار استاندارد لازم است، نام قطعی نساز و با [نیازمند بررسی منبع] مشخص کن.`},
+      {id:'dataanalysis', group:'روش و داده', icon:'📊', title:'تحلیل داده', desc:'پیشنهاد روش تحلیل کمی، کیفی، آمیخته یا داده‌محور.', tag:'Analysis', prompt:`برای تحلیل داده:
+- با توجه به سؤال‌ها، نوع داده و روش تحقیق، مسیر تحلیل مناسب را پیشنهاد بده.
+- اگر کمی است: آزمون‌ها/مدل‌ها، پیش‌فرض‌ها و شیوه گزارش را توضیح بده.
+- اگر کیفی است: کدگذاری، مقوله‌بندی، اعتباربخشی و نمونه نقل‌قول‌ها را توضیح بده.
+- اگر داده واقعی ندارم، فقط قالب تحلیل و نحوه گزارش را بساز، نتیجه جعلی تولید نکن.`},
+      {id:'results', group:'مقاله و پایان‌نامه', icon:'📈', title:'یافته‌ها / نتایج', desc:'گزارش یافته‌ها بدون اغراق و جدا از تفسیر.', tag:'Results', prompt:`برای یافته‌ها/نتایج:
+- یافته‌ها را منظم، بی‌طرف و بدون تفسیر بیش از حد گزارش کن.
+- جدول‌ها و نمودارهای پیشنهادی را معرفی کن.
+- برای هر یافته، متن گزارش علمی و نکات احتیاطی بنویس.
+- اگر داده واقعی ندارم، از [یافته ۱]، [عدد/درصد] و [نقل‌قول مشارکت‌کننده] به‌عنوان جای‌خالی استفاده کن.`},
+      {id:'discussion', group:'مقاله و پایان‌نامه', icon:'💬', title:'بحث و تفسیر', desc:'تفسیر یافته‌ها، مقایسه با ادبیات و بیان پیامدها.', tag:'Discussion', prompt:`برای بحث و تفسیر:
+- یافته‌های اصلی را تفسیر کن و نشان بده چه معنایی برای نظریه، عمل یا سیاست دارد.
+- با پیشینه پژوهش مقایسه کن، اما اگر منبع قطعی ندارم از [مطالعه/منبع مرتبط] استفاده کن.
+- توضیح بده کدام نتایج مورد انتظار یا غیرمنتظره‌اند.
+- محدودیت‌های تفسیری و پیشنهاد پژوهش بعدی را اضافه کن.`},
+      {id:'conclusion', group:'مقاله و پایان‌نامه', icon:'🏁', title:'نتیجه‌گیری', desc:'جمع‌بندی بدون تکرار، همراه با پیام اصلی و کاربردها.', tag:'Closing', prompt:`برای نتیجه‌گیری:
+- پیام اصلی پژوهش را روشن، کوتاه و غیرتکراری بنویس.
+- از تکرار مستقیم چکیده و یافته‌ها پرهیز کن.
+- سهم پژوهش، کاربرد عملی/نظری و مسیر آینده را مشخص کن.
+- نسخه کوتاه، نسخه رسمی و نسخه مناسب پایان مقاله ارائه کن.`},
+      {id:'limitations', group:'مقاله و پایان‌نامه', icon:'⚠️', title:'محدودیت‌ها و پیشنهادها', desc:'نوشتن محدودیت‌های علمی بدون تضعیف ارزش پژوهش.', tag:'بهبود', prompt:`برای محدودیت‌ها و پیشنهادها:
+- محدودیت‌های روش، داده، نمونه، تعمیم‌پذیری، ابزار و زمان را دقیق و منصفانه بنویس.
+- برای هر محدودیت، اثر احتمالی و راه‌حل پژوهش‌های آینده را پیشنهاد بده.
+- پیشنهادها را به سه دسته نظری، روش‌شناختی و کاربردی تقسیم کن.`},
+      {id:'title', group:'مقاله و پایان‌نامه', icon:'🏷️', title:'عنوان مقاله/پایان‌نامه', desc:'ساخت عنوان دقیق، جذاب، علمی و قابل جست‌وجو.', tag:'عنوان', prompt:`برای عنوان:
+- ۱۰ عنوان پیشنهادی بساز: ۵ عنوان رسمی آکادمیک، ۳ عنوان کوتاه‌تر و ۲ عنوان خلاقانه اما علمی.
+- عنوان‌ها باید شامل متغیرها/مفاهیم اصلی، جامعه/بافت و در صورت نیاز روش باشند.
+- برای هر عنوان، نقاط قوت و ضعف و مناسب‌ترین کاربرد را بگو.`},
+      {id:'editing', group:'مقاله و پایان‌نامه', icon:'✍️', title:'ویرایش علمی و زبانی', desc:'بازنویسی متن خام با حفظ معنا، انسجام و لحن علمی.', tag:'ویرایش', prompt:`برای ویرایش علمی و زبانی:
+- متن را از نظر وضوح، انسجام، دقت اصطلاحات، پرهیز از کلی‌گویی و لحن علمی اصلاح کن.
+- ابتدا ایرادها را فهرست کن، سپس نسخه بازنویسی‌شده بده.
+- اگر جمله‌ای ادعای بدون پشتوانه دارد، با [نیازمند منبع] مشخص کن.
+- معنای اصلی متن را تغییر نده مگر اینکه دلیلش را توضیح دهی.`},
+      {id:'journal', group:'انتشار و داوری', icon:'📰', title:'انتخاب مجله/کنفرانس', desc:'ساخت معیارهای انتخاب محل انتشار بدون معرفی جعلی.', tag:'انتشار', prompt:`برای انتخاب مجله/کنفرانس:
+- بر اساس موضوع، روش، مخاطب و سطح پژوهش، معیارهای انتخاب محل انتشار را بساز.
+- نوع مجله/کنفرانس مناسب، دامنه موضوعی، سطح سخت‌گیری، زمان داوری و ریسک‌ها را توضیح بده.
+- نام مجله قطعی نساز مگر اینکه من فهرست داده باشم؛ در غیر این صورت عبارت [نام مجله پیشنهادی برای بررسی] را بگذار.
+- چک‌لیست تطبیق مقاله با راهنمای نویسندگان ارائه کن.`},
+      {id:'coverletter', group:'انتشار و داوری', icon:'✉️', title:'کاور لتر / نامه ارسال مقاله', desc:'نامه حرفه‌ای برای ارسال مقاله به مجله.', tag:'Submission', prompt:`برای کاور لتر:
+- نامه‌ای رسمی، کوتاه و حرفه‌ای برای ارسال مقاله بنویس.
+- نوآوری، تناسب با دامنه مجله، اصالت اثر و تعارض منافع/اخلاق پژوهش را با جای‌خالی‌های لازم بیاور.
+- از اغراق و ادعای اثبات‌نشده پرهیز کن.
+- نسخه انگلیسی/فارسی را طبق زبان خروجی انتخابی ارائه کن.`},
+      {id:'reviewers', group:'انتشار و داوری', icon:'🛡️', title:'پاسخ به داوران', desc:'ساخت پاسخ مؤدبانه، دقیق و جدول اصلاحات.', tag:'داوری', prompt:`برای پاسخ به داوران:
+- نظر داور را ابتدا خلاصه کن، سپس پاسخ محترمانه و دقیق بنویس.
+- برای هر نظر، اقدام انجام‌شده، محل اصلاح در متن و اگر لازم است دلیل نپذیرفتن پیشنهاد را بنویس.
+- خروجی را در جدول «نظر داور / پاسخ / تغییرات اعمال‌شده / محل در نسخه جدید» بده.
+- لحن باید حرفه‌ای، غیرتدافعی و مستند باشد.`},
+      {id:'ethics', group:'انتشار و داوری', icon:'🧬', title:'اخلاق پژوهش و ریسک‌ها', desc:'کنترل محرمانگی، رضایت آگاهانه، سوگیری و ریسک انسانی.', tag:'Ethics', prompt:`برای اخلاق پژوهش:
+- ریسک‌های اخلاقی، محرمانگی، رضایت آگاهانه، سوگیری، تعارض منافع و حساسیت داده‌ها را بررسی کن.
+- برای هر ریسک، اقدام کاهش‌دهنده پیشنهاد بده.
+- اگر پژوهش با انسان، داده حساس یا گروه آسیب‌پذیر مرتبط است، هشدار بده که باید دستورالعمل‌های رسمی/کمیته اخلاق بررسی شود.
+- خروجی را به‌صورت چک‌لیست قابل استفاده ارائه کن.`},
+      {id:'thesis2paper', group:'انتشار و داوری', icon:'🔁', title:'تبدیل پایان‌نامه به مقاله', desc:'استخراج مقاله از فصل‌های پایان‌نامه و کاهش حجم.', tag:'تبدیل', prompt:`برای تبدیل پایان‌نامه به مقاله:
+- بخش‌های قابل استخراج برای مقاله را مشخص کن.
+- ساختار پیشنهادی مقاله را بر اساس IMRaD بساز.
+- بگو چه چیزهایی باید حذف، فشرده، بازنویسی یا برجسته شوند.
+- یک نقشه تبدیل فصل‌ها به بخش‌های مقاله در جدول ارائه کن.`},
+      {id:'presentation', group:'انتشار و داوری', icon:'🎤', title:'اسلاید دفاع / ارائه پژوهش', desc:'طراحی سناریو، اسلایدها و متن ارائه.', tag:'ارائه', prompt:`برای اسلاید دفاع/ارائه:
+- ساختار اسلایدها را با زمان‌بندی پیشنهاد بده.
+- برای هر اسلاید، پیام کلیدی، محتوای پیشنهادی و نکته گفتاری بنویس.
+- سؤال‌های احتمالی داور/مخاطب و پاسخ‌های پیشنهادی را اضافه کن.
+- متن را ساده، دقیق و قابل ارائه شفاهی نگه دار.`},
+      {id:'market', group:'پژوهش کاربردی', icon:'🛒', title:'تحقیق بازار', desc:'طراحی پژوهش بازار، پرسونای مشتری، رقبا و فرصت‌ها.', tag:'Business', prompt:`برای تحقیق بازار:
+- هدف تحقیق بازار، مخاطب هدف، سؤال‌های کلیدی، فرضیه‌ها و داده‌های موردنیاز را مشخص کن.
+- روش‌های مناسب مانند مصاحبه، پرسشنامه، تحلیل رقبا، تحلیل داده فروش یا رصد شبکه‌های اجتماعی را پیشنهاد بده.
+- خروجی را به شکل برنامه تحقیق + پرسش‌های اجرایی + شاخص‌های تصمیم‌گیری ارائه کن.
+- ادعاهای آماری را بدون داده واقعی نساز.`},
+      {id:'ux', group:'پژوهش کاربردی', icon:'🧪', title:'UX Research / پژوهش کاربر', desc:'ساخت برنامه مصاحبه، تست کاربردپذیری و تحلیل رفتار کاربر.', tag:'UX', prompt:`برای UX Research:
+- هدف پژوهش کاربر، پرسوناهای احتمالی، سناریوهای استفاده و سؤال‌های تحقیق را طراحی کن.
+- روش مناسب مانند مصاحبه، تست کاربردپذیری، کارت‌سورتینگ، نظرسنجی یا تحلیل رفتار را پیشنهاد بده.
+- برای هر روش، نمونه سؤال، معیار موفقیت، ریسک سوگیری و خروجی مورد انتظار را بنویس.
+- در پایان، قالب گزارش یافته‌های UX ارائه کن.`},
+      {id:'policy', group:'پژوهش کاربردی', icon:'🏛️', title:'سیاست‌پژوهی / تصمیم‌سازی', desc:'تحلیل مسئله عمومی، ذی‌نفعان، گزینه‌های سیاستی و شواهد.', tag:'Policy', prompt:`برای سیاست‌پژوهی/تصمیم‌سازی:
+- مسئله، ذی‌نفعان، زمینه نهادی، گزینه‌های سیاستی و معیارهای ارزیابی را مشخص کن.
+- برای هر گزینه، مزایا، ریسک‌ها، هزینه‌ها، پیامدهای ناخواسته و شواهد موردنیاز را بنویس.
+- خروجی را به شکل یادداشت سیاستی/Policy Brief ساختاردهی کن.
+- بین شواهد قطعی، فرضیات و نیازهای داده‌ای تمایز بگذار.`},
+      {id:'technical', group:'پژوهش کاربردی', icon:'⚙️', title:'گزارش فنی / صنعتی', desc:'ساخت گزارش برای پروژه‌های فنی، محصول، فرایند یا R&D.', tag:'Technical', prompt:`برای گزارش فنی/صنعتی:
+- مسئله فنی، هدف، محدودیت‌ها، معیارهای موفقیت، روش بررسی و نتایج مورد انتظار را ساختاردهی کن.
+- خروجی را با زبان دقیق، قابل تصمیم‌گیری و قابل اجرا بنویس.
+- فرضیات، ریسک‌ها، وابستگی‌ها و داده‌های لازم را جداگانه مشخص کن.
+- اگر عدد یا عملکرد واقعی ندارم، از [عدد/شاخص] استفاده کن.`},
+      {id:'interview', group:'پژوهش کاربردی', icon:'🎙️', title:'سناریوی مصاحبه و پرسشنامه', desc:'طراحی مسیر مصاحبه یا پرسشنامه برای پژوهش‌های مختلف.', tag:'Fieldwork', prompt:`برای سناریوی مصاحبه/پرسشنامه:
+- سؤال‌ها را از گرم‌کردن تا عمیق‌شدن و جمع‌بندی مرتب کن.
+- برای هر سؤال، هدف، پیگیری‌های احتمالی و ریسک سوگیری را بنویس.
+- سؤال‌های باز، بسته، مقیاسی و جمعیت‌شناختی را در صورت نیاز ترکیب کن.
+- متن رضایت آگاهانه کوتاه و توضیح محرمانگی را هم پیشنهاد بده.`},
+      {id:'executive', group:'پژوهش کاربردی', icon:'📌', title:'خلاصه مدیریتی', desc:'تبدیل پژوهش به گزارش کوتاه برای تصمیم‌گیران.', tag:'Executive', prompt:`برای خلاصه مدیریتی:
+- مهم‌ترین مسئله، یافته‌ها، پیامدها، گزینه‌های اقدام و توصیه نهایی را کوتاه و تصمیم‌محور بنویس.
+- از اصطلاحات پیچیده غیرضروری پرهیز کن.
+- خروجی را در قالب «پیام کلیدی / شواهد / اقدام پیشنهادی / ریسک» ارائه کن.
+- اگر یافته قطعی ندارم، از [یافته اصلی] و [شاهد/داده] استفاده کن.`},
+      {id:'competitor', group:'پژوهش کاربردی', icon:'🧭', title:'تحلیل رقبا و ترندها', desc:'چارچوب پژوهش رقبا، بازار، روندها و فرصت‌های نوظهور.', tag:'Trend', prompt:`برای تحلیل رقبا و ترندها:
+- چارچوب مقایسه رقبا، معیارها، منابع داده، فرضیات و ریسک‌های برداشت اشتباه را مشخص کن.
+- خروجی را در جدول «رقیب/روند، شواهد، فرصت، تهدید، اقدام پیشنهادی» ارائه کن.
+- هیچ داده به‌روز یا عددی را بدون منبع نساز؛ به‌جای آن [نیازمند بررسی] بگذار.
+- پیشنهاد بده چه داده‌هایی باید جمع‌آوری شود.`},
+      {id:'dashboard', group:'روش و داده', icon:'📍', title:'شاخص‌ها، داده و داشبورد پژوهشی', desc:'تعریف KPI، متریک، منبع داده و گزارش‌گیری.', tag:'Data', prompt:`برای شاخص‌ها و داشبورد پژوهشی:
+- متریک‌ها/KPIهای مناسب برای پاسخ به سؤال پژوهش را تعریف کن.
+- برای هر شاخص، فرمول، منبع داده، تناوب اندازه‌گیری، محدودیت و نحوه تفسیر را بنویس.
+- خروجی را به‌صورت جدول طراحی داشبورد و پیشنهاد نمودار ارائه کن.
+- از ساخت عدد یا نتیجه جعلی خودداری کن.`},
+      {id:'systematic', group:'مقاله و پایان‌نامه', icon:'🧠', title:'مرور نظام‌مند / اسکوپینگ', desc:'طراحی پروتکل، معیارهای ورود/خروج و راهبرد غربالگری.', tag:'Review', prompt:`برای مرور نظام‌مند/اسکوپینگ:
+- سؤال مرور را با چارچوب مناسب مانند PICO/PICOS/SPIDER یا چارچوب متناسب دیگر تنظیم کن.
+- معیارهای ورود و خروج، پایگاه‌های جست‌وجو، کلیدواژه‌ها، فرایند غربالگری و استخراج داده را طراحی کن.
+- خطر سوگیری و شیوه گزارش‌دهی را توضیح بده.
+- اگر استاندارد خاصی لازم است، آن را با [استاندارد گزارش‌دهی مناسب] علامت بزن تا بررسی شود.`},
+      {id:'grant', group:'طراحی پژوهش', icon:'💼', title:'گرنت / بودجه پژوهشی', desc:'ساخت متن هدف، نوآوری، اثرگذاری و برنامه اجرایی برای جذب حمایت.', tag:'Grant', prompt:`برای گرنت/درخواست حمایت پژوهشی:
+- مسئله، نوآوری، اثر مورد انتظار، تیم/توانمندی‌ها، روش اجرا، زمان‌بندی و بودجه کلی را ساختاردهی کن.
+- نقاط قوت پروژه و ریسک‌های اجرایی را واقع‌بینانه بنویس.
+- خروجی را به شکل متن پیشنهادی + چک‌لیست مدارک/اطلاعات کمبود ارائه کن.`}
+    ];
+
+    let activeGroup = 'همه';
+    let selectedSections = new Set(['abstract','intro','litreview','methodology']);
+
+    function showToast(text='انجام شد'){
+      const toast = $('toast');
+      toast.textContent = text;
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 1800);
+    }
+
+    function initTabs(){
+      const tabs = $('groupTabs');
+      tabs.innerHTML = groups.map(g => `<button class="tab ${g===activeGroup?'active':''}" type="button" data-group="${g}">${g}</button>`).join('');
+      tabs.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => {
+        activeGroup = btn.dataset.group;
+        renderTabs();
+        renderCards();
+      }));
+    }
+    function renderTabs(){
+      $('groupTabs').querySelectorAll('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.group === activeGroup));
+    }
+    function renderCards(){
+      const q = $('sectionSearch').value.trim().toLowerCase();
+      const filtered = sections.filter(s => {
+        const inGroup = activeGroup === 'همه' || s.group === activeGroup;
+        const hay = `${s.title} ${s.desc} ${s.group} ${s.tag}`.toLowerCase();
+        return inGroup && (!q || hay.includes(q));
+      });
+      $('cardsGrid').innerHTML = filtered.map(s => `
+        <article class="section-card ${selectedSections.has(s.id)?'selected':''}" data-id="${s.id}" tabindex="0" role="button" aria-pressed="${selectedSections.has(s.id)}">
+          <span class="check">${selectedSections.has(s.id)?'✓':''}</span>
+          <h3>${s.icon} ${s.title}</h3>
+          <p>${s.desc}</p>
+          <span class="tag">${s.group} / ${s.tag}</span>
+        </article>
+      `).join('') || '<p class="hint">موردی پیدا نشد.</p>';
+      $('cardsGrid').querySelectorAll('.section-card').forEach(card => {
+        const toggle = () => {
+          const id = card.dataset.id;
+          selectedSections.has(id) ? selectedSections.delete(id) : selectedSections.add(id);
+          renderCards(); renderSelectedList(); generatePrompt(); saveState();
+        };
+        card.addEventListener('click', toggle);
+        card.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+      });
+    }
+    function renderSelectedList(){
+      const selected = sections.filter(s => selectedSections.has(s.id));
+      $('statSections').textContent = faDigits(selected.length);
+      $('sectionCount').textContent = `${faDigits(selected.length)} بخش`;
+      if(!selected.length){
+        $('selectedList').innerHTML = '<span class="hint">هنوز بخشی انتخاب نشده است.</span>';
+        return;
+      }
+      $('selectedList').innerHTML = selected.map(s => `<span class="selected-item">${s.icon} ${s.title}<button type="button" data-remove="${s.id}" title="حذف">×</button></span>`).join('');
+      $('selectedList').querySelectorAll('[data-remove]').forEach(btn => btn.addEventListener('click', () => {
+        selectedSections.delete(btn.dataset.remove); renderCards(); renderSelectedList(); generatePrompt(); saveState();
+      }));
+    }
+
+    function bracket(label){ return `[${label}]`; }
+    function cleanLines(arr){ return arr.filter(Boolean).join('\n'); }
+    function bulletList(arr){ return arr && arr.length ? arr.map(x => `- ${x}`).join('\n') : '- [معیارهای کیفیت موردنظر]'; }
+    function selectedResearchTypes(){
+      const types = getSelectedChecks('researchTypeChips');
+      return types.length ? types.join('، ') : bracket('نوع پژوهش');
+    }
+    function selectedQuality(){
+      return getSelectedChecks('qualityChips');
+    }
+    function selectedAdvancedTechniques(){
+      const mode = $('promptMode')?.value || 'hybrid';
+      if(mode === 'basic') return [];
+      return getSelectedChecks('advancedTechniqueChips');
+    }
+    function buildPromptStyleBlock(){
+      const mode = $('promptMode')?.value || 'hybrid';
+      const modeText = {
+        basic:'پرامپت اصولی پنج‌مرحله‌ای؛ مناسب کارهای روشن و مستقیم.',
+        hybrid:'پرامپت ترکیبی؛ فرمول اصولی حفظ شود و تکنیک‌های انتخابی برای کنترل کیفیت اضافه شوند.',
+        advanced:'پرامپت پیشرفته؛ مناسب کارهای پیچیده، چندمرحله‌ای، حساس و نیازمند ارزیابی.'
+      }[mode] || 'پرامپت ترکیبی';
+      const control = $('controlMode')?.value || 'دقیق و ساختاریافته';
+      const note = ($('advancedNote')?.value || '').trim();
+      const techniques = selectedAdvancedTechniques();
+      let block = `- سبک انتخابی: ${modeText}
+- رویکرد کنترل خروجی: ${control}`;
+      if(mode !== 'basic'){
+        block += `
+
+تکنیک‌های فعال:
+${bulletList(techniques)}`;
+      }else{
+        block += `
+
+تکنیک‌های پیشرفته غیرفعال هستند؛ فقط فرمول Task، Context، References، Evaluate و Iterate را دقیق اجرا کن.`;
+      }
+      if(note){
+        block += `
+
+یادداشت اختصاصی کاربر:
+${note}`;
+      }
+      return block;
+    }
+    function getPersona(){
+      const val = $('persona').value;
+      if(val === 'custom') return getVal('customPersona', bracket('نقش تخصصی هوش مصنوعی'));
+      return val;
+    }
+    function collectReferences(){
+      const refs = [];
+      const r1 = $('ref1').value.trim();
+      const r2 = $('ref2').value.trim();
+      if(r1) refs.push(`نمونه/رفرنس ۱:\n${r1}`);
+      if(r2) refs.push(`نمونه‌های بیشتر:\n${r2}`);
+      return refs.length ? refs.join('\n\n') : `[در صورت وجود، ۲ تا ۵ نمونه از سبک، ساختار، متن خام، راهنمای استاد/مجله یا خروجی مطلوب را اینجا اضافه کن. اگر نمونه نداری، همین بخش را خالی بگذار.]`;
+    }
+    function generatePrompt(){
+      const selected = sections.filter(s => selectedSections.has(s.id));
+      const topic = getVal('topic', bracket('موضوع/عنوان پژوهش'));
+      const field = getVal('field', bracket('حوزه، رشته یا صنعت'));
+      const audience = getVal('audience', bracket('مخاطب یا محل استفاده'));
+      const problem = getVal('problem', bracket('مسئله، دغدغه یا شکاف پژوهشی'));
+      const questions = getVal('questions', bracket('اهداف، سؤال‌ها یا فرضیه‌های اولیه'));
+      const method = getVal('method', bracket('روش تحقیق یا رویکرد پیشنهادی'));
+      const sample = getVal('sample', bracket('جامعه، نمونه، میدان یا داده‌ها'));
+      const keywords = getVal('keywords', bracket('کلیدواژه‌ها، مفاهیم، نظریه‌ها یا مدل‌ها'));
+      const constraints = getVal('constraints', bracket('محدودیت‌ها و الزامات'));
+      const length = getVal('length', bracket('طول یا حجم خروجی'));
+      const notes = getVal('notes', bracket('یادداشت‌ها و دستورهای خاص'));
+      const quality = selectedQuality();
+      const sectionPrompts = selected.length ? selected.map((s, i) => `### ${faDigits(i+1)}. ${s.title}\n${s.prompt}`).join('\n\n') : `[یک یا چند بخش پژوهشی مثل چکیده، مقدمه، پیشینه، روش‌شناسی، تحلیل داده یا گزارش کاربردی را مشخص کن.]`;
+
+      const prompt = `تو نقش «${getPersona()}» را داری. با نگاه حرفه‌ای، سخت‌گیرانه، دقیق و قابل اجرا به من کمک کن.
+
+# 🧩 فرمول ۵ مرحله‌ای پرامپت عالی
+
+## 1) Task | وظیفه اصلی
+وظیفه تو این است که برای پژوهش زیر، خروجی حرفه‌ای تولید/اصلاح/طراحی کنی.
+- هدف اصلی: ${$('mainGoal').value}
+- بخش‌های موردنیاز: ${selected.length ? selected.map(s => s.title).join('، ') : bracket('بخش‌های پژوهش')}
+- فرمت خروجی: ${$('outputFormat').value}
+- زبان خروجی: ${$('language').value}
+- سطح تخصصی: ${$('depth').value}
+- طول تقریبی خروجی: ${length}
+
+## 2) Context | زمینه، جزئیات و محدودیت‌ها
+- موضوع/عنوان پژوهش: ${topic}
+- حوزه/رشته/صنعت: ${field}
+- نوع پژوهش: ${selectedResearchTypes()}
+- مخاطب یا محل استفاده: ${audience}
+- مسئله یا شکاف پژوهشی: ${problem}
+- اهداف/سؤال‌ها/فرضیه‌ها: ${questions}
+- روش تحقیق/رویکرد: ${method}
+- جامعه/نمونه/داده‌ها: ${sample}
+- چارچوب نظری/مدل/کلیدواژه‌ها: ${keywords}
+- محدودیت‌ها و الزامات: ${constraints}
+- سبک استناد یا استاندارد: ${$('citationStyle').value}
+- یادداشت‌های خاص: ${notes}
+
+## 3) References | نمونه‌ها و رفرنس‌های سبک
+- حالت نمونه‌دهی: ${$('shotMode').value}
+- سیاست استفاده از منابع: ${$('sourcePolicy').value}
+
+نمونه‌ها/رفرنس‌ها/متن خام:
+${collectReferences()}
+
+## بخش‌های دقیق مورد انتظار
+${sectionPrompts}
+
+## قواعد حرفه‌ای خروجی
+- هرجا داده کافی نداری، سؤال بپرس یا جای‌خالی دقیق با [ ] بگذار؛ حدس قطعی نزن.
+- منبع، آمار، نقل‌قول، نام نویسنده، DOI، ژورنال یا داده واقعی جعل نکن.
+- اگر ادعایی نیازمند پشتوانه است، با [نیازمند منبع] یا [نیازمند داده] مشخص کن.
+- بین «اطلاعات قطعی»، «فرضیه»، «پیشنهاد» و «نیازمند بررسی» تفاوت بگذار.
+- خروجی باید قابل استفاده، تمیز، ساختاریافته و بدون کلی‌گویی باشد.
+- اصطلاحات تخصصی را با دقت به کار ببر و اگر ابهام دارد، گزینه‌های ممکن را توضیح بده.
+
+## اصل طلایی پژوهش با GenAI
+- خروجی هوش مصنوعی را پیش‌نویس قابل ویرایش بدان، نه حقیقت قطعی.
+- برای ادعاهای مهم، عددها، نقل‌قول‌ها، منابع، نام نویسنده، ژورنال، DOI و داده‌های حساس راستی‌آزمایی لازم است.
+- اگر داده در ورودی من وجود ندارد، آن را حدس قطعی نزن و با [نیازمند منبع]، [نیازمند داده] یا [نامشخص] مشخص کن.
+- کاربردهای اصلی مورد انتظار می‌تواند شامل خلاصه‌سازی، استخراج ایده و سؤال پژوهشی، ساخت چارچوب مقاله/پروپوزال/پایان‌نامه، مقایسه نظریه‌ها/روش‌ها/مقالات و بازنویسی علمی باشد.
+
+## سبک و تکنیک‌های پرامپت‌نویسی انتخاب‌شده
+${buildPromptStyleBlock()}
+
+## 4) Evaluate | ارزیابی کیفیت خروجی
+پس از تولید خروجی، آن را با معیارهای زیر کنترل کن:
+${bulletList(quality)}
+
+شیوه ارزیابی: ${$('evalMode').value}
+
+## 5) Iterate | بهبود مرحله‌ای
+${$('iterateMode').value}
+
+در پایان، یک بخش کوتاه با عنوان «برای بهتر شدن پاسخ بعدی، این اطلاعات را تکمیل کن» بنویس و دقیقاً ۳ تا ۷ جای‌خالی مهم را داخل [ ] پیشنهاد بده.`;
+
+      $('promptOutput').value = prompt;
+      const words = prompt.trim().split(/\s+/).filter(Boolean).length;
+      $('wordCount').textContent = `${faDigits(words)} واژه`;
+      $('charCount').textContent = `${faDigits(prompt.length)} نویسه`;
+    }
+
+    function saveState(){
+      const state = {
+        accent: document.body.dataset.accent,
+        dark: document.body.classList.contains('dark'),
+        compact: document.body.classList.contains('compact'),
+        selectedSections:[...selectedSections],
+        fields:{
+          persona:$('persona').value, customPersona:$('customPersona').value, mainGoal:$('mainGoal').value, outputFormat:$('outputFormat').value,
+          language:$('language').value, depth:$('depth').value, topic:$('topic').value, field:$('field').value, audience:$('audience').value,
+          problem:$('problem').value, questions:$('questions').value, method:$('method').value, sample:$('sample').value, keywords:$('keywords').value,
+          constraints:$('constraints').value, citationStyle:$('citationStyle').value, length:$('length').value, notes:$('notes').value,
+          shotMode:$('shotMode').value, sourcePolicy:$('sourcePolicy').value, ref1:$('ref1').value, ref2:$('ref2').value,
+          evalMode:$('evalMode').value, iterateMode:$('iterateMode').value, promptMode:$('promptMode')?.value || 'hybrid', controlMode:$('controlMode')?.value || '', advancedNote:$('advancedNote')?.value || ''
+        },
+        researchTypes:getSelectedChecks('researchTypeChips'),
+        quality:getSelectedChecks('qualityChips'),
+        advancedTechniques:getSelectedChecks('advancedTechniqueChips')
+      };
+      try{ localStorage.setItem('researchPromptBuilderState', JSON.stringify(state)); }catch(e){}
+    }
+    function loadState(){
+      try{
+        const raw = localStorage.getItem('researchPromptBuilderState');
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(state.accent){ document.body.dataset.accent = state.accent; $('accentSelect').value = state.accent; }
+        document.body.classList.toggle('dark', !!state.dark);
+        document.body.classList.toggle('compact', !!state.compact);
+        $('themeBtn').textContent = state.dark ? '☀️ حالت روز' : '🌙 حالت شب';
+        $('compactBtn').textContent = state.compact ? 'حالت معمولی' : 'حالت فشرده';
+        if(Array.isArray(state.selectedSections)) selectedSections = new Set(state.selectedSections);
+        if(state.fields){ Object.entries(state.fields).forEach(([k,v]) => { if($(k)) $(k).value = v; }); }
+        if(Array.isArray(state.researchTypes)){
+          $('researchTypeChips').querySelectorAll('input').forEach(i => i.checked = state.researchTypes.includes(i.value));
+        }
+        if(Array.isArray(state.quality)){
+          $('qualityChips').querySelectorAll('input').forEach(i => i.checked = state.quality.includes(i.value));
+        }
+        if(Array.isArray(state.advancedTechniques) && $('advancedTechniqueChips')){
+          $('advancedTechniqueChips').querySelectorAll('input').forEach(i => i.checked = state.advancedTechniques.includes(i.value));
+        }
+      }catch(e){}
+    }
+
+    function fillExample(){
+      $('persona').value = 'یک استاد راهنمای پژوهش، روش‌شناس علمی و ویراستار آکادمیک با تجربه در مقاله‌نویسی، پایان‌نامه‌نویسی و طراحی پژوهش‌های کاربردی';
+      $('mainGoal').value = 'طراحی ساختار، چارچوب و مسیر پژوهش';
+      $('outputFormat').value = 'ساختار مرحله‌ای با تیترهای روشن، بولت‌های دقیق و جدول‌های لازم';
+      $('language').value = 'فارسی رسمی، دقیق و روان';
+      $('depth').value = 'حرفه‌ای و قابل استفاده برای پژوهش جدی';
+      $('topic').value = 'تأثیر تجربه خرید آنلاین بر وفاداری مشتریان در فروشگاه‌های بومی';
+      $('field').value = 'مدیریت بازاریابی، تجارت الکترونیک و رفتار مصرف‌کننده';
+      $('audience').value = 'استاد راهنما، داور مقاله و مدیر کسب‌وکار';
+      $('problem').value = 'با وجود افزایش خرید آنلاین، هنوز روشن نیست کدام ابعاد تجربه خرید مانند اعتماد، سهولت استفاده، کیفیت اطلاعات و پشتیبانی بیشترین اثر را بر وفاداری مشتریان فروشگاه‌های بومی دارند.';
+      $('questions').value = 'هدف: شناسایی عوامل مؤثر بر وفاداری مشتریان. سؤال‌ها: تجربه خرید آنلاین چه اثری بر اعتماد دارد؟ اعتماد چه نقشی در خرید مجدد دارد؟ کیفیت اطلاعات چگونه بر رضایت اثر می‌گذارد؟';
+      $('method').value = 'پژوهش کمی پیمایشی با پرسشنامه؛ امکان ترکیب با چند مصاحبه اکتشافی';
+      $('sample').value = 'مشتریان فروشگاه‌های آنلاین بومی در ایران؛ نمونه پیشنهادی هنوز مشخص نیست';
+      $('keywords').value = 'تجربه خرید آنلاین، وفاداری مشتری، اعتماد، رضایت، تجارت الکترونیک، رفتار مصرف‌کننده';
+      $('constraints').value = 'زمان محدود، دسترسی محدود به داده فروش واقعی، نیاز به متن قابل دفاع برای استاد';
+      $('length').value = 'حدود ۸۰۰ تا ۱۲۰۰ کلمه برای هر بخش اصلی';
+      $('notes').value = 'از کلی‌گویی پرهیز کن. هرجا نیاز به منبع دارد با [نیازمند منبع] مشخص کن. خروجی باید برای تبدیل به مقاله هم مناسب باشد.';
+      if($('promptMode')) $('promptMode').value = 'hybrid';
+      if($('controlMode')) $('controlMode').selectedIndex = 0;
+      if($('advancedNote')) $('advancedNote').value = 'ابتدا خروجی را ساختاریافته بده؛ سپس با معیارهای دقت علمی، انسجام و ریسک خطا ارزیابی کن.';
+      if($('advancedTechniqueChips')) $('advancedTechniqueChips').querySelectorAll('input').forEach(i => i.checked = i.dataset.default === '1');
+      selectedSections = new Set(['problem','questions','abstract','intro','litreview','methodology','instrument','discussion','conclusion']);
+      $('ref1').value = '';
+      $('ref2').value = '';
+      renderCards(); renderSelectedList(); generatePrompt(); saveState(); showToast('نمونه حرفه‌ای وارد شد');
+      location.hash = '#output';
+    }
+
+    function bindEvents(){
+      document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('input', () => { generatePrompt(); saveState(); });
+        el.addEventListener('change', () => { generatePrompt(); saveState(); });
+      });
+      $('persona').addEventListener('change', () => {
+        $('customPersonaWrap').style.display = $('persona').value === 'custom' ? 'block' : 'none';
+      });
+      $('sectionSearch').addEventListener('input', renderCards);
+      $('selectGroupBtn').addEventListener('click', () => {
+        sections.filter(s => activeGroup === 'همه' || s.group === activeGroup).forEach(s => selectedSections.add(s.id));
+        renderCards(); renderSelectedList(); generatePrompt(); saveState(); showToast('گروه انتخاب شد');
+      });
+      $('clearSectionsBtn').addEventListener('click', () => {
+        selectedSections.clear(); renderCards(); renderSelectedList(); generatePrompt(); saveState(); showToast('انتخاب‌ها پاک شد');
+      });
+      $('copyBtn').addEventListener('click', async () => {
+        const text = $('promptOutput').value;
+        try{
+          if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); }
+          else{
+            $('promptOutput').focus(); $('promptOutput').select(); document.execCommand('copy'); window.getSelection().removeAllRanges();
+          }
+          showToast('پرامپت کپی شد');
+        }catch(e){
+          $('promptOutput').focus(); $('promptOutput').select(); showToast('متن انتخاب شد؛ کپی کن');
+        }
+      });
+      $('downloadBtn').addEventListener('click', () => {
+        const blob = new Blob([$('promptOutput').value], {type:'text/plain;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'research-prompt.txt';
+        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        showToast('فایل TXT ساخته شد');
+      });
+      $('resetBtn').addEventListener('click', () => {
+        if(!confirm('فرم و تنظیمات پاک شود؟')) return;
+        localStorage.removeItem('researchPromptBuilderState');
+        document.querySelectorAll('input[type="text"], input:not([type]), textarea').forEach(el => el.value = '');
+        $('persona').selectedIndex = 0; $('mainGoal').selectedIndex = 0; $('outputFormat').selectedIndex = 0; $('language').selectedIndex = 0; $('depth').selectedIndex = 0;
+        $('citationStyle').selectedIndex = 0; $('shotMode').selectedIndex = 0; $('sourcePolicy').selectedIndex = 0; $('evalMode').selectedIndex = 0; $('iterateMode').selectedIndex = 0;
+        $('researchTypeChips').querySelectorAll('input').forEach((i,idx)=>i.checked = idx===0);
+        $('qualityChips').querySelectorAll('input').forEach((i,idx)=>i.checked = idx<4);
+        selectedSections = new Set(['abstract','intro','litreview','methodology']);
+        $('customPersonaWrap').style.display = 'none';
+        renderCards(); renderSelectedList(); generatePrompt(); saveState(); showToast('فرم پاک‌سازی شد');
+      });
+      $('themeBtn').addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const dark = document.body.classList.contains('dark');
+        $('themeBtn').textContent = dark ? '☀️ حالت روز' : '🌙 حالت شب';
+        saveState();
+      });
+      $('compactBtn').addEventListener('click', () => {
+        document.body.classList.toggle('compact');
+        $('compactBtn').textContent = document.body.classList.contains('compact') ? 'حالت معمولی' : 'حالت فشرده';
+        saveState();
+      });
+      $('accentSelect').addEventListener('change', () => { document.body.dataset.accent = $('accentSelect').value; saveState(); });
+      $('loadExampleBtn').addEventListener('click', fillExample);
+      $('helpBtn').addEventListener('click', () => $('helpModal').classList.add('show'));
+      $('closeHelpBtn').addEventListener('click', () => $('helpModal').classList.remove('show'));
+      $('helpModal').addEventListener('click', (e) => { if(e.target.id === 'helpModal') $('helpModal').classList.remove('show'); });
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') $('helpModal').classList.remove('show'); });
+    }
+
+    loadState();
+    initTabs();
+    bindEvents();
+    $('customPersonaWrap').style.display = $('persona').value === 'custom' ? 'block' : 'none';
+    renderCards();
+    renderSelectedList();
+    generatePrompt();
+  </script>
+</body>
+</html>
